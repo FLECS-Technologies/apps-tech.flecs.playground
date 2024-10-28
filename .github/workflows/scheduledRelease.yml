@@ -38,4 +38,4 @@ jobs:
         env:
           REPO_DIR: ${{ github.event.inputs.repo_dir }}
           IMAGE_NAME: ${{ github.event.inputs.image_name }}
-        run: https://github.com/FLECS-Technologies/apps-tech.flecs.playground/tree/main/.github/workflows/TagCollector.py
+        run: https://github.com/FLECS-Technologies/apps-tech.flecs.playground/tree/main/.github/workflows/tagCollector.py
