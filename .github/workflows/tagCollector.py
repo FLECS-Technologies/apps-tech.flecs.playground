@@ -7,6 +7,7 @@ import re
 from enum import Enum
 from packaging import version
 
+repo_name = os.getenv("GITHUB_REPOSITORY")
 
 def clone_repository(repo_url, repo_dir):
     if not os.path.exists(repo_dir):
@@ -35,9 +36,10 @@ def inspect_dockerfile_for_variants(repo_dir):
                 else:
                     return False  # No variants
 '''
+'''
 def inspect_dockerfile_for_variants(repo_dir):
     dockerfile_path = os.path.join(repo_dir, 'docker/Dockerfile')
-    variant_files = [f for f in os.listdir(os.path.join(repo_dir, 'docker'))]
+    variant_files = [f for f in os.listdir(os.path.join(repo_name, 'docker'))]
     variants = {}
     
     with open(dockerfile_path, 'r') as dockerfile:
@@ -55,7 +57,32 @@ repo_dir = os.getenv('GITHUB_WORKSPACE', '/path/to/repo')
 image_name = "example_image"
 variants = inspect_dockerfile_for_variants(repo_dir)
 
+'''
+
+def inspect_dockerfile_for_variants(repo_dir):
+    dockerfile_path = os.path.join(repo_dir, 'docker', 'Dockerfile')
+    docker_dir = os.path.join(repo_dir, 'docker')
     
+    if not os.path.isfile(dockerfile_path):
+        print(f"Das Dockerfile wurde unter '{dockerfile_path}' nicht gefunden.")
+        return False
+    
+    with open(dockerfile_path, 'r') as dockerfile:
+        for line in dockerfile:
+            if line.startswith('FROM') and '{VARIANT}' in line:
+                try:
+                    variant_files = os.listdir(docker_dir)
+                    variants = [
+                        variant_file.split('-')[1] for variant_file in variant_files if '-' in variant_file
+                    ]
+                except FileNotFoundError:
+                    print(f"Das Verzeichnis '{docker_dir}' wurde nicht gefunden.")
+                    return False
+
+                return variants
+    return False
+
+
 def fetch_and_sort_tags(image_name, variants):
     tags = {}
     docker_hub_url = "https://hub.docker.com/v2/repositories"
@@ -114,7 +141,7 @@ def find_newer_versions(repo_tags, common_tags):
             return tag  
     return None
     
-repo_dir = "/path/to/repo"
+repo_dir = os.getenv('GITHUB_WORKSPACE', '/path/to/repo')
 image_name = "example_image"
 variants = inspect_dockerfile_for_variants(repo_dir)
 
