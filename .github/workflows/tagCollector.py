@@ -7,7 +7,6 @@ import re
 from enum import Enum
 from packaging import version
 
-repo_dir = os.getenv('GITHUB_WORKSPACE', 'apps-tech.flecs.playground/docker')
 
 def clone_repository(repo_url, repo_dir):
     if not os.path.exists(repo_dir):
