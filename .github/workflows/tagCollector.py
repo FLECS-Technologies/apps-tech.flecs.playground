@@ -18,7 +18,7 @@ def checkout_branch(repo_dir, branch='origin/main'):
 
 def inspect_dockerfile_for_variants(repo_dir):
     dockerfile_path = os.path.join(repo_dir, 'docker/Dockerfile')
-    variant_files = [f for f in os.listdir(os.path.join(repo_dir, 'docker')) if f.startswith('manifest-') and f.endswith('.json')]
+    variant_files = [f for f in os.listdir(os.path.join(repo_dir, 'docker'))] #if f.startswith('manifest-') and f.endswith('.json')]
     variants = {}
     
     with open(dockerfile_path, 'r') as dockerfile:
