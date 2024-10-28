@@ -108,4 +108,4 @@ newer_version = find_newer_versions(repo_tags, common_tags)
 if newer_version:
     print(f"New version found: {newer_version}")
 else:
-    print("No new version found.")c
+    print("No new version found.")
