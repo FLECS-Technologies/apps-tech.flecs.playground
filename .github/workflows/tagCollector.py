@@ -64,7 +64,7 @@ def inspect_dockerfile_for_variants(repo_dir):
     docker_dir = os.path.join(repo_dir, 'docker')
     
     if not os.path.isfile(dockerfile_path):
-        print(f"Das Dockerfile wurde unter '{dockerfile_path}' nicht gefunden.")
+        print(f"Dockerfile has not been found in '{dockerfile_path}'.")
         return False
     
     with open(dockerfile_path, 'r') as dockerfile:
@@ -76,7 +76,7 @@ def inspect_dockerfile_for_variants(repo_dir):
                         variant_file.split('-')[1] for variant_file in variant_files if '-' in variant_file
                     ]
                 except FileNotFoundError:
-                    print(f"Das Verzeichnis '{docker_dir}' wurde nicht gefunden.")
+                    print(f"Directory has not been found: '{docker_dir}'.")
                     return False
 
                 return variants
@@ -96,6 +96,7 @@ def fetch_and_sort_tags(image_name, variants):
             tags = sorted([tag['name'] for tag in tags_data])
         else:
             print(f"Error fetching tags for {image_name}")
+            print(f"Trying this url: {url}")
     else:
         # Variant found
         for variant_name in variants.keys():
