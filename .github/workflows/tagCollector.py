@@ -143,8 +143,10 @@ def find_newer_versions(repo_tags, common_tags):
     return None
     
 repo_dir = os.getenv('GITHUB_WORKSPACE', '/path/to/repo')
-image_name = "example_image"
 variants = inspect_dockerfile_for_variants(repo_dir)
+
+reverse_domain_name = os.getenv("GITHUB_REPOSITORY", "default_owner/default_repo")
+image_name = reverse_domain_name.split('.')[-1]  
 
 variant_tags = fetch_and_sort_tags(image_name, variants)
 
