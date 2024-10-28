@@ -1,0 +1,41 @@
+name: TagCollector
+
+on:
+
+  workflow_dispatch: # Manual Trigger
+    inputs:
+      repo_dir:
+        description: "Repository Directory"
+        required: true
+        default: "./"  
+      image_name:
+        description: "Docker Image Name"
+        required: true
+        default: "example_image"
+  schedule:
+    - cron: '0 3 * * 1-5' # Weekly Trigger on Monday-Friday 3:00 mm HH DD MM DW
+
+
+jobs:
+  run_python_script:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          fi
+
+      - name: Run Python script
+        env:
+          REPO_DIR: ${{ github.event.inputs.repo_dir }}
+          IMAGE_NAME: ${{ github.event.inputs.image_name }}
+        run: https://github.com/FLECS-Technologies/apps-tech.flecs.playground/tree/main/.github/workflows/TagCollector.py
