@@ -38,4 +38,4 @@ jobs:
         env:
           REPO_DIR: ${{ github.event.inputs.repo_dir }}
           IMAGE_NAME: ${{ github.event.inputs.image_name }}
-        run: github/workflows/tagCollector.py
+        run: python .github/workflows/tagCollector.py
