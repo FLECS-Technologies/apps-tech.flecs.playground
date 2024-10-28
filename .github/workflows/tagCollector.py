@@ -16,6 +16,7 @@ def clone_repository(repo_url, repo_dir):
 def checkout_branch(repo_dir, branch='origin/main'):
     subprocess.run(['git', '-C', repo_dir, 'checkout', branch])
 
+'''
 def inspect_dockerfile_for_variants(repo_dir):
     dockerfile_path = os.path.join(repo_dir, 'docker/Dockerfile')
     variant_files = [f for f in os.listdir(os.path.join(repo_dir, 'docker'))] #if f.startswith('manifest-') and f.endswith('.json')]
@@ -32,6 +33,27 @@ def inspect_dockerfile_for_variants(repo_dir):
                     return variants  # Variant available
                 else:
                     return False  # No variants
+'''
+def inspect_dockerfile_for_variants(repo_dir):
+    dockerfile_path = os.path.join(repo_dir, 'docker/Dockerfile')
+    variant_files = [f for f in os.listdir(os.path.join(repo_dir, 'docker'))]
+    variants = {}
+    
+    with open(dockerfile_path, 'r') as dockerfile:
+        for line in dockerfile:
+            if line.startswith('FROM'):
+                if '{VARIANT}' in line:
+                    for variant_file in variant_files:
+                        variant_name = variant_file.split('-')[1].replace('.json', '')
+                        variants[variant_name] = variant_file
+                    return variants
+                else:
+                    return False
+
+repo_dir = os.getenv('GITHUB_WORKSPACE', '/path/to/repo')
+image_name = "example_image"
+variants = inspect_dockerfile_for_variants(repo_dir)
+
     
 def fetch_and_sort_tags(image_name, variants):
     tags = {}
