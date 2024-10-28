@@ -35,6 +35,7 @@ jobs:
           fi
             pip install requests
             pip install GitPython
+            pip install packaging
 
       - name: Run Python script
         env:
