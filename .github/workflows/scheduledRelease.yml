@@ -41,7 +41,7 @@ jobs:
         run: |
           APP_NAME=$(grep -m 1 '^FROM ' ./docker/Dockerfile | awk '{print $2}')
           echo "App Name: $APP_NAME"
-          echo "::set-output name=app_name::$APP_NAME"
+          echo "app_name=$APP_NAME" >> $GITHUB_ENV
 
       - name: Run Python script
         env:
