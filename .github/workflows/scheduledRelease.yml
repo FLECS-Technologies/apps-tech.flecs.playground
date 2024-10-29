@@ -11,7 +11,7 @@ on:
       image_name:
         description: "Docker Image Name"
         required: true
-        default: ${{ github.event.inputs.image_name }}
+        default: "${{ github.repository }}"
   schedule:
     - cron: '0 3 * * 1-5' # Weekly Trigger on Monday-Friday 3:00 mm HH DD MM DW
 
