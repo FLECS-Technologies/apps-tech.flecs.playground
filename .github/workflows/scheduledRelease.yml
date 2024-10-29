@@ -39,7 +39,7 @@ jobs:
       - name: Get name from Dockerfile
         id: get_app_name
         run: |
-          APP_NAME=$(grep -m 1 '^FROM ' ./docker/Dockerfile | awk '{print $2}')
+          APP_NAME=$(grep -m 1 '^FROM ' ./docker/Dockerfile | awk '{print $2}' | cut -d':' -f1)
           echo "App Name: $APP_NAME"
           echo "app_name=$APP_NAME" >> $GITHUB_ENV
 
