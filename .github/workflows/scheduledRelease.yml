@@ -7,7 +7,7 @@ on:
       repo_dir:
         description: "Repository Directory"
         required: true
-        default: ${{ github.event.inputs.repo_dir }}  
+        default: "./"
       image_name:
         description: "Docker Image Name"
         required: true
