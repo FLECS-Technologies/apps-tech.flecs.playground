@@ -7,11 +7,11 @@ on:
       repo_dir:
         description: "Repository Directory"
         required: true
-        default: "./"  
+        default: ${{ github.event.inputs.repo_dir }}  
       image_name:
         description: "Docker Image Name"
         required: true
-        default: "example_image"
+        default: ${{ github.event.inputs.image_name }}
   schedule:
     - cron: '0 3 * * 1-5' # Weekly Trigger on Monday-Friday 3:00 mm HH DD MM DW
 
