@@ -7,11 +7,10 @@ on:
       repo_dir:
         description: "Repository Directory"
         required: true
-        default: "./"
+        default: "./" 
       image_name:
         description: "Docker Image Name"
-        required: true
-        default: "${{ github.repository }}"
+        required: false
   schedule:
     - cron: '0 3 * * 1-5' # Weekly Trigger on Monday-Friday 3:00 mm HH DD MM DW
 
@@ -37,8 +36,15 @@ jobs:
             pip install GitPython
             pip install packaging
 
+      - name: Get name from Dockerfile
+        id: get_app_name
+        run: |
+          APP_NAME=$(grep -m 1 '^FROM ' ./docker/Dockerfile | awk '{print $2}')
+          echo "App Name: $APP_NAME"
+          echo "::set-output name=app_name::$APP_NAME"
+
       - name: Run Python script
         env:
           REPO_DIR: ${{ github.event.inputs.repo_dir }}
-          IMAGE_NAME: ${{ github.event.inputs.image_name }}
+          IMAGE_NAME: ${{ github.event.inputs.image_name || steps.get_app_name.outputs.app_name }}}}
         run: python .github/workflows/tagCollector.py
