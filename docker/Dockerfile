@@ -2,11 +2,8 @@ ARG ARCH
 ARG VERSION
 ARG VARIANT
 
-FROM scratch:${VERSION}
+FROM alpine
 
 ARG ARCH
 ARG VERSION
 ARG VARIANT
-
-RUN [ ! -z "${ARCH}" ]
-RUN [ ! -z "${VERSION}" ]
